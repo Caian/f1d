@@ -11,7 +11,7 @@ There is also a factory class generated for each struct that can be used to ensu
 
 ## Requirements
 
-This project requires [boost](https://www.boost.org/) for the preprocessor capabilites and as a dependency for the [ex3](https://github.com/Caian/ex3) project, used as the base for the exceptions thrown by the factory class.
+This project requires [boost](https://www.boost.org/) for the preprocessor capabilites and as a dependency for the [ex3](https://github.com/Caian/ex3) project, used as the base for the exceptions thrown by the factory class. It also requires libdl, as a dependency of boost stacktrace.
 
 ## Usage
 
