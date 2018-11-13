@@ -1,4 +1,7 @@
 # f1d
+
+[![Build Status](https://travis-ci.org/Caian/f1d.svg?branch=master)](https://travis-ci.org/Caian/f1d)
+
 Generate structs from field tuples with convenient metadata
 
 ## Introduction
