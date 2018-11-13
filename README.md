@@ -108,10 +108,10 @@ Currently, the template `value_type` **does not** allow multiple `F1D_STRUCT_MAK
 The factory class can be used to ensure that each field of the struct is set once and only once when the struct is being initialized. To use it, you must:
 
 - Instance a factory object;
-- Call begin();
+- Call `begin()`;
 - Set every field through its setter exactly once;
-- Call end() to finish the initialization;
-- Call get() to obtain a constant reference to the initialized struct;
+- Call `end()` to finish the initialization;
+- Call `get()` to obtain a constant reference to the initialized struct;
 
 The *begin-set-end-get* cycle can be repeated as many times as necessary, always following this exact order. The `get()` method can be called multiple times, but always after `end()`.
 
