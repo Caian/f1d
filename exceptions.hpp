@@ -34,6 +34,11 @@ typedef ex3::pretty_container<
     > pretty_string_vector;
 
 typedef boost::error_info<
+    struct tag_struct_name,
+    std::string
+    > struct_name;
+
+typedef boost::error_info<
     struct tag_field_index,
     unsigned int
     > field_index;

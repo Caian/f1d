@@ -83,13 +83,16 @@
     void BOOST_PP_CAT(set_, Name)(const Type& value) \
     { \
         if (!_begun) { \
-            EX3_THROW(f1d::not_intialized_exception()); \
+            EX3_THROW(f1d::not_intialized_exception() \
+                << f1d::struct_name(get_struct_name())); \
         } \
         if (_ended) { \
-            EX3_THROW(f1d::already_finished_exception()); \
+            EX3_THROW(f1d::already_finished_exception() \
+                << f1d::struct_name(get_struct_name())); \
         } \
         if (_set_fields[Idx]) { \
             EX3_THROW(f1d::already_set_exception() \
+                << f1d::struct_name(get_struct_name()) \
                 << f1d::field_index(Idx) \
                 << f1d::field_name(BOOST_PP_STRINGIZE(Name))); \
         } \
@@ -99,10 +102,12 @@
     const Type& BOOST_PP_CAT(get_, Name)() \
     { \
         if (!_begun) { \
-            EX3_THROW(f1d::not_intialized_exception()); \
+            EX3_THROW(f1d::not_intialized_exception() \
+                << f1d::struct_name(get_struct_name())); \
         } \
         if (!_set_fields[Idx]) { \
             EX3_THROW(f1d::not_set_exception() \
+                << f1d::struct_name(get_struct_name()) \
                 << f1d::field_index(Idx) \
                 << f1d::field_name(BOOST_PP_STRINGIZE(Name))); \
         } \
@@ -169,11 +174,16 @@ struct Name { \
     { \
         return num_fields; \
     } \
+    static const char* get_struct_name() \
+    { \
+        return BOOST_PP_STRINGIZE(Name); \
+    } \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_FIELDS, types, Fields) \
     static const char* get_field_name(unsigned int index) \
     { \
         if (index >= NF) { \
             EX3_THROW(f1d::not_found_exception() \
+                << f1d::struct_name(get_struct_name()) \
                 << f1d::field_index(index)); \
         } \
         static const char* field_names[] = { \
@@ -186,6 +196,7 @@ struct Name { \
     { \
         if (index >= NF) { \
             EX3_THROW(f1d::not_found_exception() \
+                << f1d::struct_name(get_struct_name()) \
                 << f1d::field_index(index)); \
         } \
         static const char* type_names[] = { \
@@ -198,12 +209,14 @@ struct Name { \
     { \
         BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_SNAMES, 0, Fields) \
         EX3_THROW(f1d::not_found_exception() \
+            << f1d::struct_name(get_struct_name()) \
             << f1d::field_name(name)); \
     } \
     static size_t get_type_size(unsigned int index) \
     { \
         if (index >= NF) { \
             EX3_THROW(f1d::not_found_exception() \
+                << f1d::struct_name(get_struct_name()) \
                 << f1d::field_index(index)); \
         } \
         static const size_t type_sizes[] = { \
@@ -219,6 +232,10 @@ private: \
     bool _begun; \
     bool _ended; \
     std::vector<bool> _set_fields; \
+    static const char* get_struct_name() \
+    { \
+        return Name::get_struct_name(); \
+    } \
     bool all_set() const \
     { \
         for (size_t i = 0; i < _set_fields.size(); i++) \
@@ -239,6 +256,7 @@ private: \
         } \
         if (failed) { \
             EX3_THROW(f1d::not_set_exception() \
+                << f1d::struct_name(get_struct_name()) \
                 << f1d::field_indices(indices) \
                 << f1d::field_names(names)); \
         } \
@@ -254,7 +272,8 @@ public: \
     void begin() \
     { \
         if (_begun && !_ended) {\
-            EX3_THROW(f1d::not_finished_exception()); \
+            EX3_THROW(f1d::not_finished_exception() \
+                << f1d::struct_name(get_struct_name())); \
         } \
         _begun = true; \
         _ended = false; \
@@ -263,10 +282,12 @@ public: \
     void end() \
     { \
         if (!_begun) { \
-            EX3_THROW(f1d::not_intialized_exception()); \
+            EX3_THROW(f1d::not_intialized_exception() \
+                << f1d::struct_name(get_struct_name())); \
         } \
         if (_ended) { \
-            EX3_THROW(f1d::already_finished_exception()); \
+            EX3_THROW(f1d::already_finished_exception() \
+                << f1d::struct_name(get_struct_name())); \
         } \
         assert_fields(); \
         _ended = true; \
@@ -274,10 +295,12 @@ public: \
     const Name& get() const \
     { \
         if (!_begun) { \
-            EX3_THROW(f1d::not_intialized_exception()); \
+            EX3_THROW(f1d::not_intialized_exception() \
+                << f1d::struct_name(get_struct_name())); \
         } \
         if (!_ended) { \
-            EX3_THROW(f1d::not_finished_exception()); \
+            EX3_THROW(f1d::not_finished_exception() \
+                << f1d::struct_name(get_struct_name())); \
         } \
         return _obj; \
     } \
