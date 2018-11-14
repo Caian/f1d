@@ -213,7 +213,7 @@ struct Name { \
         return type_sizes[index]; \
     } \
 }; \
-class Name##_factory { \
+class BOOST_PP_CAT(Name,_factory) { \
 private: \
     Name _obj; \
     bool _begun; \
@@ -239,12 +239,13 @@ private: \
         } \
         if (failed) { \
             EX3_THROW(f1d::not_set_exception() \
+                << f1d::struct_name(get_struct_name()) \
                 << f1d::field_indices(indices) \
                 << f1d::field_names(names)); \
         } \
     } \
 public: \
-    Name##_factory() : \
+    BOOST_PP_CAT(Name,_factory)() : \
         _obj(), \
         _begun(false), \
         _ended(false), \
