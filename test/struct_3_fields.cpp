@@ -22,6 +22,22 @@
 #include <gtest/gtest.h>
 #include <typeinfo>
 
+#define MY_ASSERT_THROW_STRUCT_NAME(stmt, Name) \
+    try { \
+        (stmt); \
+    } \
+    catch (const std::exception& ex) { \
+        \
+        const std::string* sname; \
+        sname = boost::get_error_info<f1d::struct_name>(ex); \
+        \
+        ASSERT_TRUE(sname != 0); \
+        ASSERT_STREQ(sname->c_str(), Name); \
+    } \
+    catch (...) { \
+        FAIL() << "Unexpected exception thrown by f.end()!"; \
+    }
+
 namespace test {
 
 F1D_STRUCT_MAKE(my_struct_3,
@@ -80,6 +96,8 @@ TEST(Struct3FieldsTest, AccessNameMetadata)
     EXPECT_STREQ(test::my_struct_3::get_field_name(2), "field3");
     EXPECT_THROW(test::my_struct_3::get_field_name(3), f1d::not_found_exception);
 
+    MY_ASSERT_THROW_STRUCT_NAME(test::my_struct_3::get_field_name(3), "my_struct_3");
+
     try {
         test::my_struct_3::get_field_name(3);
     }
@@ -105,6 +123,8 @@ TEST(Struct3FieldsTest, AccessTypeNameMetadata)
     EXPECT_STREQ(test::my_struct_3::get_type_name(1), "int");
     EXPECT_STREQ(test::my_struct_3::get_type_name(2), "char");
     EXPECT_THROW(test::my_struct_3::get_type_name(3), f1d::not_found_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(test::my_struct_3::get_type_name(3), "my_struct_3");
 
     try {
         test::my_struct_3::get_field_name(3);
@@ -132,6 +152,8 @@ TEST(Struct3FieldsTest, AccessTypeSizeMetadata)
     EXPECT_EQ(test::my_struct_3::get_type_size(2), sizeof(char));
     EXPECT_THROW(test::my_struct_3::get_type_size(3), f1d::not_found_exception);
 
+    MY_ASSERT_THROW_STRUCT_NAME(test::my_struct_3::get_type_size(3), "my_struct_3");
+
     try {
         test::my_struct_3::get_field_name(3);
     }
@@ -157,6 +179,8 @@ TEST(Struct3FieldsTest, AccessIndexMetadata)
     EXPECT_EQ(test::my_struct_3::get_field_index("field2"), 1);
     EXPECT_EQ(test::my_struct_3::get_field_index("field3"), 2);
     EXPECT_THROW(test::my_struct_3::get_field_index("field4"), f1d::not_found_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(test::my_struct_3::get_field_index("field4"), "my_struct_3");
 
     try {
         test::my_struct_3::get_field_index("field4");
@@ -459,6 +483,9 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet1)
     }
 
     EXPECT_THROW(f.get_field1(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field1(), "my_struct_3");
+
     EXPECT_EQ   (f.get_field2(), v2);
     EXPECT_EQ   (f.get_field3(), v3);
 
@@ -507,6 +534,9 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet1)
     }
 
     EXPECT_THROW(f.get_field2(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field2(), "my_struct_3");
+
     EXPECT_EQ   (f.get_field1(), v1);
     EXPECT_EQ   (f.get_field3(), v3);
 
@@ -555,6 +585,9 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet1)
     }
 
     EXPECT_THROW(f.get_field3(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field3(), "my_struct_3");
+
     EXPECT_EQ   (f.get_field1(), v1);
     EXPECT_EQ   (f.get_field2(), v2);
 
@@ -616,7 +649,13 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet2)
     }
 
     EXPECT_THROW(f.get_field1(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field1(), "my_struct_3");
+
     EXPECT_THROW(f.get_field2(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field2(), "my_struct_3");
+
     EXPECT_EQ   (f.get_field3(), v3);
 
     ASSERT_NO_THROW(f.set_field1(v1));
@@ -668,7 +707,12 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet2)
 
     EXPECT_EQ   (f.get_field1(), v1);
     EXPECT_THROW(f.get_field2(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field2(), "my_struct_3");
+
     EXPECT_THROW(f.get_field3(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field3(), "my_struct_3");
 
     ASSERT_NO_THROW(f.set_field2(v2));
     ASSERT_NO_THROW(f.set_field3(v3));
@@ -718,7 +762,13 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet2)
     }
 
     EXPECT_THROW(f.get_field1(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field1(), "my_struct_3");
+
     EXPECT_THROW(f.get_field3(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field3(), "my_struct_3");
+
     EXPECT_EQ   (f.get_field2(), v2);
 
     ASSERT_NO_THROW(f.set_field1(v1));

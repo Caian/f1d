@@ -22,6 +22,22 @@
 #include <gtest/gtest.h>
 #include <typeinfo>
 
+#define MY_ASSERT_THROW_STRUCT_NAME(stmt, Name) \
+    try { \
+        (stmt); \
+    } \
+    catch (const std::exception& ex) { \
+        \
+        const std::string* sname; \
+        sname = boost::get_error_info<f1d::struct_name>(ex); \
+        \
+        ASSERT_TRUE(sname != 0); \
+        ASSERT_STREQ(sname->c_str(), Name); \
+    } \
+    catch (...) { \
+        FAIL() << "Unexpected exception thrown by f.end()!"; \
+    }
+
 namespace test {
 
 F1D_STRUCT_MAKE(my_struct_1,
@@ -70,6 +86,8 @@ TEST(Struct1FieldsTest, AccessNameMetadata)
     EXPECT_STREQ(test::my_struct_1::get_field_name(0), "field1");
     EXPECT_THROW(test::my_struct_1::get_field_name(1), f1d::not_found_exception);
 
+    MY_ASSERT_THROW_STRUCT_NAME(test::my_struct_1::get_field_name(1), "my_struct_1");
+
     try {
         test::my_struct_1::get_field_name(1);
     }
@@ -93,6 +111,8 @@ TEST(Struct1FieldsTest, AccessTypeNameMetadata)
 {
     EXPECT_STREQ(test::my_struct_1::get_type_name(0), "double");
     EXPECT_THROW(test::my_struct_1::get_type_name(1), f1d::not_found_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(test::my_struct_1::get_type_name(1), "my_struct_1");
 
     try {
         test::my_struct_1::get_field_name(1);
@@ -118,6 +138,8 @@ TEST(Struct1FieldsTest, AccessTypeSizeMetadata)
     EXPECT_EQ(test::my_struct_1::get_type_size(0), sizeof(double));
     EXPECT_THROW(test::my_struct_1::get_type_size(1), f1d::not_found_exception);
 
+    MY_ASSERT_THROW_STRUCT_NAME(test::my_struct_1::get_type_size(1), "my_struct_1");
+
     try {
         test::my_struct_1::get_field_name(1);
     }
@@ -141,6 +163,8 @@ TEST(Struct1FieldsTest, AccessIndexMetadata)
 {
     EXPECT_EQ(test::my_struct_1::get_field_index("field1"), 0);
     EXPECT_THROW(test::my_struct_1::get_field_index("field2"), f1d::not_found_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(test::my_struct_1::get_field_index("field2"), "my_struct_1");
 
     try {
         test::my_struct_1::get_field_index("field2");
@@ -226,6 +250,8 @@ TEST(Struct1FieldsTest, FactoryDoubleBegin)
 
     ASSERT_NO_THROW(f.begin());
     ASSERT_THROW(f.begin(), f1d::not_finished_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.begin(), "my_struct_1");
 }
 
 /**
@@ -241,6 +267,8 @@ TEST(Struct1FieldsTest, FactoryGetBeforeSet)
     ASSERT_NO_THROW(f.begin());
 
     ASSERT_THROW(f.get_field1(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get_field1(), "my_struct_1");
 
     ASSERT_NO_THROW(f.set_field1(v1));
 
@@ -265,6 +293,8 @@ TEST(Struct1FieldsTest, FactoryDoubleEnd)
     ASSERT_NO_THROW(f.set_field1(v1));
     ASSERT_NO_THROW(f.end());
     ASSERT_THROW(f.end(), f1d::already_finished_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.end(), "my_struct_1");
 }
 
 /**
@@ -283,6 +313,9 @@ TEST(Struct1FieldsTest, FactoryMultipleSet)
     ASSERT_NO_THROW(f.begin());
     ASSERT_NO_THROW(f.set_field1(v11));
     ASSERT_THROW   (f.set_field1(v12), f1d::already_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.set_field1(v12), "my_struct_1");
+
     ASSERT_NO_THROW(f.end());
     ASSERT_NO_THROW((ms = f.get()));
 
@@ -305,6 +338,9 @@ TEST(Struct1FieldsTest, FactorySetAfterEnd)
     ASSERT_NO_THROW(f.set_field1(v1));
     ASSERT_NO_THROW(f.end());
     ASSERT_THROW   (f.set_field1(v1), f1d::already_finished_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.set_field1(v1), "my_struct_1");
+
     ASSERT_NO_THROW((ms = f.get()));
 
     EXPECT_EQ(f.get_field1(), v1);
@@ -320,6 +356,8 @@ TEST(Struct1FieldsTest, FactoryEndBeforeBegin)
     test::my_struct_1_factory f;
 
     ASSERT_THROW(f.end(), f1d::not_intialized_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.end(), "my_struct_1");
 }
 
 /**
@@ -332,6 +370,8 @@ TEST(Struct1FieldsTest, FactorySetBeforeBegin)
     test::my_struct_1_factory f;
 
     ASSERT_THROW(f.set_field1(v1), f1d::not_intialized_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.set_field1(v1), "my_struct_1");
 }
 
 /**
@@ -344,7 +384,12 @@ TEST(Struct1FieldsTest, FactoryIncompleteSet1)
 
     ASSERT_NO_THROW(f.begin());
     ASSERT_THROW   (f.end(), f1d::not_set_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.end(), "my_struct_1");
+
     ASSERT_THROW   ((ms = f.get()), f1d::not_finished_exception);
+
+    MY_ASSERT_THROW_STRUCT_NAME(f.get(), "my_struct_1");
 
     try {
         f.end();
