@@ -20,6 +20,7 @@
 
 #include <f1d/fields.hpp>
 #include <gtest/gtest.h>
+#include <typeinfo>
 
 namespace test {
 
