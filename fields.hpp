@@ -239,7 +239,6 @@ private: \
         } \
         if (failed) { \
             EX3_THROW(f1d::not_set_exception() \
-                << f1d::struct_name(get_struct_name()) \
                 << f1d::field_indices(indices) \
                 << f1d::field_names(names)); \
         } \
