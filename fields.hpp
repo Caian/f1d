@@ -226,7 +226,7 @@ struct Name { \
         return type_sizes[index]; \
     } \
 }; \
-class Name##_factory { \
+class BOOST_PP_CAT(Name,_factory) { \
 private: \
     Name _obj; \
     bool _begun; \
@@ -262,7 +262,7 @@ private: \
         } \
     } \
 public: \
-    Name##_factory() : \
+    BOOST_PP_CAT(Name,_factory)() : \
         _obj(), \
         _begun(false), \
         _ended(false), \
