@@ -56,6 +56,14 @@ TEST(Struct3FieldsTest, AccessMembers)
 /**
  * Test metadata access
  */
+TEST(Struct3FieldsTest, AccessStructName)
+{
+    EXPECT_STREQ(test::my_struct_3::get_struct_name(), "my_struct_3");
+}
+
+/**
+ * Test metadata access
+ */
 TEST(Struct3FieldsTest, AccessCountMetadata)
 {
     EXPECT_EQ(static_cast<unsigned int>(test::my_struct_3::num_fields), 3);

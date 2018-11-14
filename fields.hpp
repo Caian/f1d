@@ -169,6 +169,10 @@ struct Name { \
     { \
         return num_fields; \
     } \
+    static const char* get_struct_name() \
+    { \
+        return BOOST_PP_STRINGIZE(Name); \
+    } \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_FIELDS, types, Fields) \
     static const char* get_field_name(unsigned int index) \
     { \
@@ -219,6 +223,10 @@ private: \
     bool _begun; \
     bool _ended; \
     std::vector<bool> _set_fields; \
+    static const char* get_struct_name() \
+    { \
+        return Name::get_struct_name(); \
+    } \
     bool all_set() const \
     { \
         for (size_t i = 0; i < _set_fields.size(); i++) \
