@@ -117,6 +117,16 @@ TEST(Struct3FieldsTest, AccessNameMetadata)
 /**
  * Test metadata access
  */
+TEST(Struct3FieldsTest, AccessNameMetadata2)
+{
+    EXPECT_STREQ(test::my_struct_3::get_field_names()[0], "field1");
+    EXPECT_STREQ(test::my_struct_3::get_field_names()[1], "field2");
+    EXPECT_STREQ(test::my_struct_3::get_field_names()[2], "field3");
+}
+
+/**
+ * Test metadata access
+ */
 TEST(Struct3FieldsTest, AccessTypeNameMetadata)
 {
     EXPECT_STREQ(test::my_struct_3::get_type_name(0), "float");
@@ -145,6 +155,16 @@ TEST(Struct3FieldsTest, AccessTypeNameMetadata)
 /**
  * Test metadata access
  */
+TEST(Struct3FieldsTest, AccessTypeNameMetadata2)
+{
+    EXPECT_STREQ(test::my_struct_3::get_type_names()[0], "float");
+    EXPECT_STREQ(test::my_struct_3::get_type_names()[1], "int");
+    EXPECT_STREQ(test::my_struct_3::get_type_names()[2], "char");
+}
+
+/**
+ * Test metadata access
+ */
 TEST(Struct3FieldsTest, AccessTypeSizeMetadata)
 {
     EXPECT_EQ(test::my_struct_3::get_type_size(0), sizeof(float));
@@ -168,6 +188,16 @@ TEST(Struct3FieldsTest, AccessTypeSizeMetadata)
     catch (...) {
         FAIL() << "Unexpected exception thrown by f.end()!";
     }
+}
+
+/**
+ * Test metadata access
+ */
+TEST(Struct3FieldsTest, AccessTypeSizeMetadata2)
+{
+    EXPECT_EQ(test::my_struct_3::get_type_sizes()[0], sizeof(float));
+    EXPECT_EQ(test::my_struct_3::get_type_sizes()[1], sizeof(int));
+    EXPECT_EQ(test::my_struct_3::get_type_sizes()[2], sizeof(char));
 }
 
 /**
