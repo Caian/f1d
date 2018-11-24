@@ -49,9 +49,12 @@ struct my_struct_3
 
     static const unsigned int num_fields = 3;
     static unsigned int get_num_fields() { ... }
+    static const char** get_field_names() { ... }
     static const char* get_field_name(unsigned int index) { ... }
+    static const char** get_type_names() { ... }
     static const char* get_type_name(unsigned int index) { ... }
     static unsigned int get_field_index(const std::string& name) { ... }
+    static const size_t* get_type_sizes() { ... }
     static size_t get_type_size(unsigned int index) { ... }
 };
 

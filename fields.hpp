@@ -179,6 +179,14 @@ struct Name { \
         return BOOST_PP_STRINGIZE(Name); \
     } \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_FIELDS, types, Fields) \
+    static const char** get_field_names() \
+    { \
+        static const char* field_names[] = { \
+            BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_NAMES, 0, Fields) \
+            "" \
+        }; \
+        return field_names; \
+    } \
     static const char* get_field_name(unsigned int index) \
     { \
         if (index >= NF) { \
@@ -186,11 +194,16 @@ struct Name { \
                 << f1d::struct_name(get_struct_name()) \
                 << f1d::field_index(index)); \
         } \
-        static const char* field_names[] = { \
-            BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_NAMES, 0, Fields) \
+        static const char** field_names = get_field_names(); \
+        return field_names[index]; \
+    } \
+    static const char** get_type_names() \
+    { \
+        static const char* type_names[] = { \
+            BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TNAMES, 0, Fields) \
             "" \
         }; \
-        return field_names[index]; \
+        return type_names; \
     } \
     static const char* get_type_name(unsigned int index) \
     { \
@@ -199,10 +212,7 @@ struct Name { \
                 << f1d::struct_name(get_struct_name()) \
                 << f1d::field_index(index)); \
         } \
-        static const char* type_names[] = { \
-            BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TNAMES, 0, Fields) \
-            "" \
-        }; \
+        static const char** type_names = get_type_names(); \
         return type_names[index]; \
     } \
     static unsigned int get_field_index(const std::string& name) \
@@ -212,6 +222,14 @@ struct Name { \
             << f1d::struct_name(get_struct_name()) \
             << f1d::field_name(name)); \
     } \
+    static const size_t* get_type_sizes() \
+    { \
+        static const size_t type_sizes[] = { \
+            BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TSIZES, 0, Fields) \
+            0 \
+        }; \
+        return type_sizes; \
+    } \
     static size_t get_type_size(unsigned int index) \
     { \
         if (index >= NF) { \
@@ -219,10 +237,7 @@ struct Name { \
                 << f1d::struct_name(get_struct_name()) \
                 << f1d::field_index(index)); \
         } \
-        static const size_t type_sizes[] = { \
-            BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TSIZES, 0, Fields) \
-            0 \
-        }; \
+        static const size_t* type_sizes = get_type_sizes(); \
         return type_sizes[index]; \
     } \
 }; \

@@ -107,6 +107,14 @@ TEST(Struct1FieldsTest, AccessNameMetadata)
 /**
  * Test metadata access
  */
+TEST(Struct1FieldsTest, AccessNameMetadata2)
+{
+    EXPECT_STREQ(test::my_struct_1::get_field_names()[0], "field1");
+}
+
+/**
+ * Test metadata access
+ */
 TEST(Struct1FieldsTest, AccessTypeNameMetadata)
 {
     EXPECT_STREQ(test::my_struct_1::get_type_name(0), "double");
@@ -133,6 +141,14 @@ TEST(Struct1FieldsTest, AccessTypeNameMetadata)
 /**
  * Test metadata access
  */
+TEST(Struct1FieldsTest, AccessTypeNameMetadata2)
+{
+    EXPECT_STREQ(test::my_struct_1::get_type_names()[0], "double");
+}
+
+/**
+ * Test metadata access
+ */
 TEST(Struct1FieldsTest, AccessTypeSizeMetadata)
 {
     EXPECT_EQ(test::my_struct_1::get_type_size(0), sizeof(double));
@@ -154,6 +170,14 @@ TEST(Struct1FieldsTest, AccessTypeSizeMetadata)
     catch (...) {
         FAIL() << "Unexpected exception thrown by f.end()!";
     }
+}
+
+/**
+ * Test metadata access
+ */
+TEST(Struct1FieldsTest, AccessTypeSizeMetadata2)
+{
+    EXPECT_EQ(test::my_struct_1::get_type_sizes()[0], sizeof(double));
 }
 
 /**
