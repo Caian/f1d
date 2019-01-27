@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Caian Benedicto <caianbene@gmail.com>
+ * Copyright (C) 2018-2019 Caian Benedicto <caianbene@gmail.com>
  *
  * This file is part of f1d.
  *
