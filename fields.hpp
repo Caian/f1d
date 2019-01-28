@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Caian Benedicto <caianbene@gmail.com>
+ * Copyright (C) 2018-2019 Caian Benedicto <caianbene@gmail.com>
  *
  * This file is part of f1d.
  *
@@ -75,6 +75,65 @@
 #define F1D_STRUCT_ASSEMBLE_FIELDS(_s, Namespace, i, elem) \
     F1D_STRUCT_ASSEMBLE_FIELD( \
         Namespace, \
+        BOOST_PP_TUPLE_ELEM(2, 0, elem))
+
+///////////////////////////////////////////////////////////////////////////////
+
+#define F1D_STRUCT_ASSEMBLE_SUPER_FIELD(StructName, i, Name) \
+    struct BOOST_PP_CAT(Name,_f) { \
+        static const unsigned int index = i; \
+        typedef BOOST_PP_CAT(Name,_f) this_type; \
+        typedef F1D_STRUCT_TYPE_NAME(Name) value_type; \
+        value_type _value; \
+        BOOST_PP_CAT(Name,_f)() : \
+            _value() \
+        { \
+        } \
+        BOOST_PP_CAT(Name,_f)(const this_type& other) : \
+            _value(other._value) \
+        { \
+        } \
+        BOOST_PP_CAT(Name,_f)(const value_type& value) : \
+            _value(value) \
+        { \
+        } \
+        BOOST_PP_CAT(Name,_f)(const StructName& obj) : \
+            _value(obj.Name) \
+        { \
+        } \
+        this_type& operator =(const this_type& other) { \
+            _value = other._value; \
+            return *this; \
+        } \
+        this_type& operator =(const value_type& value) { \
+            _value = value; \
+            return *this; \
+        } \
+        this_type& operator =(const StructName& obj) { \
+            _value = obj.Name; \
+            return *this; \
+        } \
+        const value_type& get() const { \
+            return _value; \
+        } \
+        value_type& get() { \
+            return _value; \
+        } \
+        operator value_type() const { \
+            return get(); \
+        } \
+        void operator ()(value_type& value) { \
+            value = _value; \
+        } \
+        void operator ()(StructName& obj) { \
+            obj.Name = _value; \
+        } \
+    };
+
+#define F1D_STRUCT_ASSEMBLE_SUPER_FIELDS(_s, StructName, i, elem) \
+    F1D_STRUCT_ASSEMBLE_SUPER_FIELD( \
+        StructName, \
+        i, \
         BOOST_PP_TUPLE_ELEM(2, 0, elem))
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -241,6 +300,9 @@ struct Name { \
         return type_sizes[index]; \
     } \
 }; \
+namespace types { \
+    BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_SUPER_FIELDS, Name, Fields) \
+} \
 class BOOST_PP_CAT(Name,_factory) { \
 private: \
     Name _obj; \
@@ -326,6 +388,16 @@ namespace traits { \
     struct value_type \
     { \
         typedef void type; \
+    }; \
+    template <class T> \
+    struct field_type \
+    { \
+        typedef typename T::value_type type; \
+    }; \
+    template <class T> \
+    struct field_index \
+    { \
+        static const unsigned int value = T::index; \
     }; \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TRAITS, Name, Fields) \
 }

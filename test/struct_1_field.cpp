@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Caian Benedicto <caianbene@gmail.com>
+ * Copyright (C) 2018-2019 Caian Benedicto <caianbene@gmail.com>
  *
  * This file is part of f1d.
  *
@@ -438,4 +438,112 @@ TEST(Struct1FieldsTest, FactoryIncompleteSet1)
     catch (...) {
         FAIL() << "Unexpected exception thrown by f.end()!";
     }
+}
+
+/**
+ * Test the field type constructors
+ */
+TEST(Struct1FieldsTest, FieldConstruct)
+{
+    const double v1 = 1.4;
+
+    test::my_struct_1 ms;
+    test::my_struct_1_factory f;
+
+    ASSERT_NO_THROW(f.begin());
+    ASSERT_NO_THROW(f.set_field1(v1));
+    ASSERT_NO_THROW(f.end());
+    ASSERT_NO_THROW((ms = f.get()));
+
+    EXPECT_EQ(f.get_field1(), v1);
+
+    EXPECT_EQ(ms.field1, v1);
+
+    test::types::field1_f field1_1(v1);
+    test::types::field1_f field1_2(field1_1);
+    test::types::field1_f field1_3(ms);
+
+    EXPECT_EQ(field1_1.get(), v1);
+    EXPECT_EQ(field1_2.get(), v1);
+    EXPECT_EQ(field1_3.get(), v1);
+}
+
+/**
+ * Test the field type assign operators
+ */
+TEST(Struct1FieldsTest, FieldAssign)
+{
+    const double v1 = 1.4;
+
+    test::my_struct_1 ms;
+    test::my_struct_1_factory f;
+
+    ASSERT_NO_THROW(f.begin());
+    ASSERT_NO_THROW(f.set_field1(v1));
+    ASSERT_NO_THROW(f.end());
+    ASSERT_NO_THROW((ms = f.get()));
+
+    EXPECT_EQ(f.get_field1(), v1);
+
+    EXPECT_EQ(ms.field1, v1);
+
+    test::types::field1_f field1_1;
+    test::types::field1_f field1_2;
+    test::types::field1_f field1_3;
+    test::types::field1_f field1_4;
+
+    field1_1 = v1;
+    field1_2 = field1_1;
+    field1_3 = ms;
+    field1_4.get() = v1;
+
+    EXPECT_EQ(field1_1.get(), v1);
+    EXPECT_EQ(field1_2.get(), v1);
+    EXPECT_EQ(field1_3.get(), v1);
+    EXPECT_EQ(field1_3.get(), v1);
+}
+
+/**
+ * Test the field type cast operators
+ */
+TEST(Struct1FieldsTest, FieldCast)
+{
+    const double v1 = 1.4;
+
+    test::types::field1_f field1(v1);
+
+    const double vf1 = field1;
+
+    EXPECT_EQ(field1.get(), v1);
+    EXPECT_EQ(vf1, v1);
+}
+
+/**
+ * Test the field type call operators
+ */
+TEST(Struct1FieldsTest, FieldApply)
+{
+    const double v1 = 1.4;
+
+    test::types::field1_f field1(v1);
+
+    double vf1;
+    test::my_struct_1 ms;
+
+    field1(vf1);
+    field1(ms);
+
+    EXPECT_EQ(field1.get(), v1);
+    EXPECT_EQ(vf1, v1);
+    EXPECT_EQ(ms.field1, v1);
+}
+
+/**
+ * Test the field type traits
+ */
+TEST(Struct1FieldsTest, FieldTraits)
+{
+    EXPECT_EQ(typeid(double), typeid(test::traits::field_type<test::types::field1_f>::type));
+
+    EXPECT_EQ(0, static_cast<unsigned int>(test::traits::field_index<test::types::field1_f>::value));
 }

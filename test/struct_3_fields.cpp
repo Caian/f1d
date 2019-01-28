@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Caian Benedicto <caianbene@gmail.com>
+ * Copyright (C) 2018-2019 Caian Benedicto <caianbene@gmail.com>
  *
  * This file is part of f1d.
  *
@@ -813,4 +813,208 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet2)
     EXPECT_EQ(ms.field1, v1);
     EXPECT_EQ(ms.field2, v2);
     EXPECT_EQ(ms.field3, v3);
+}
+
+/**
+ * Test the field type constructors
+ */
+TEST(Struct3FieldsTest, FieldConstruct)
+{
+    const float v1 = 1.4f;
+    const int   v2 = -7;
+    const char  v3 = 'H';
+
+    test::my_struct_3 ms;
+    test::my_struct_3_factory f;
+
+    ASSERT_NO_THROW(f.begin());
+    ASSERT_NO_THROW(f.set_field1(v1));
+    ASSERT_NO_THROW(f.set_field2(v2));
+    ASSERT_NO_THROW(f.set_field3(v3));
+    ASSERT_NO_THROW(f.end());
+    ASSERT_NO_THROW((ms = f.get()));
+
+    EXPECT_EQ(f.get_field1(), v1);
+    EXPECT_EQ(f.get_field2(), v2);
+    EXPECT_EQ(f.get_field3(), v3);
+
+    EXPECT_EQ(ms.field1, v1);
+    EXPECT_EQ(ms.field2, v2);
+    EXPECT_EQ(ms.field3, v3);
+
+    test::types::field1_f field1_1(v1);
+    test::types::field1_f field1_2(field1_1);
+    test::types::field1_f field1_3(ms);
+
+    EXPECT_EQ(field1_1.get(), v1);
+    EXPECT_EQ(field1_2.get(), v1);
+    EXPECT_EQ(field1_3.get(), v1);
+
+    test::types::field2_f field2_1(v2);
+    test::types::field2_f field2_2(field2_1);
+    test::types::field2_f field2_3(ms);
+
+    EXPECT_EQ(field2_1.get(), v2);
+    EXPECT_EQ(field2_2.get(), v2);
+    EXPECT_EQ(field2_3.get(), v2);
+
+    test::types::field3_f field3_1(v3);
+    test::types::field3_f field3_2(field3_1);
+    test::types::field3_f field3_3(ms);
+
+    EXPECT_EQ(field3_1.get(), v3);
+    EXPECT_EQ(field3_2.get(), v3);
+    EXPECT_EQ(field3_3.get(), v3);
+}
+
+/**
+ * Test the field type assign operators
+ */
+TEST(Struct3FieldsTest, FieldAssign)
+{
+    const float v1 = 1.4f;
+    const int   v2 = -7;
+    const char  v3 = 'H';
+
+    test::my_struct_3 ms;
+    test::my_struct_3_factory f;
+
+    ASSERT_NO_THROW(f.begin());
+    ASSERT_NO_THROW(f.set_field1(v1));
+    ASSERT_NO_THROW(f.set_field2(v2));
+    ASSERT_NO_THROW(f.set_field3(v3));
+    ASSERT_NO_THROW(f.end());
+    ASSERT_NO_THROW((ms = f.get()));
+
+    EXPECT_EQ(f.get_field1(), v1);
+    EXPECT_EQ(f.get_field2(), v2);
+    EXPECT_EQ(f.get_field3(), v3);
+
+    EXPECT_EQ(ms.field1, v1);
+    EXPECT_EQ(ms.field2, v2);
+    EXPECT_EQ(ms.field3, v3);
+
+    test::types::field1_f field1_1;
+    test::types::field1_f field1_2;
+    test::types::field1_f field1_3;
+    test::types::field1_f field1_4;
+
+    field1_1 = v1;
+    field1_2 = field1_1;
+    field1_3 = ms;
+    field1_4.get() = v1;
+
+    EXPECT_EQ(field1_1.get(), v1);
+    EXPECT_EQ(field1_2.get(), v1);
+    EXPECT_EQ(field1_3.get(), v1);
+    EXPECT_EQ(field1_4.get(), v1);
+
+    test::types::field2_f field2_1;
+    test::types::field2_f field2_2;
+    test::types::field2_f field2_3;
+    test::types::field2_f field2_4;
+
+    field2_1 = v2;
+    field2_2 = field2_1;
+    field2_3 = ms;
+    field2_4.get() = v2;
+
+    EXPECT_EQ(field2_1.get(), v2);
+    EXPECT_EQ(field2_2.get(), v2);
+    EXPECT_EQ(field2_3.get(), v2);
+    EXPECT_EQ(field2_4.get(), v2);
+
+    test::types::field3_f field3_1;
+    test::types::field3_f field3_2;
+    test::types::field3_f field3_3;
+    test::types::field3_f field3_4;
+
+    field3_1 = v3;
+    field3_2 = field3_1;
+    field3_3 = ms;
+    field3_4.get() = v3;
+
+    EXPECT_EQ(field3_1.get(), v3);
+    EXPECT_EQ(field3_2.get(), v3);
+    EXPECT_EQ(field3_3.get(), v3);
+    EXPECT_EQ(field3_4.get(), v3);
+}
+
+/**
+ * Test the field type cast operators
+ */
+TEST(Struct3FieldsTest, FieldCast)
+{
+    const float v1 = 1.4f;
+    const int   v2 = -7;
+    const char  v3 = 'H';
+
+    test::types::field1_f field1(v1);
+    test::types::field2_f field2(v2);
+    test::types::field3_f field3(v3);
+
+    const float vf1 = field1;
+    const int   vf2 = field2;
+    const char  vf3 = field3;
+
+    EXPECT_EQ(field1.get(), v1);
+    EXPECT_EQ(field2.get(), v2);
+    EXPECT_EQ(field3.get(), v3);
+
+    EXPECT_EQ(vf1, v1);
+    EXPECT_EQ(vf2, v2);
+    EXPECT_EQ(vf3, v3);
+}
+
+/**
+ * Test the field type call operators
+ */
+TEST(Struct3FieldsTest, FieldApply)
+{
+    const float v1 = 1.4f;
+    const int   v2 = -7;
+    const char  v3 = 'H';
+
+    test::types::field1_f field1(v1);
+    test::types::field2_f field2(v2);
+    test::types::field3_f field3(v3);
+
+    float vf1;
+    int   vf2;
+    char  vf3;
+    test::my_struct_3 ms;
+
+    field1(vf1);
+    field2(vf2);
+    field3(vf3);
+
+    field1(ms);
+    field2(ms);
+    field3(ms);
+
+    EXPECT_EQ(field1.get(), v1);
+    EXPECT_EQ(field2.get(), v2);
+    EXPECT_EQ(field3.get(), v3);
+
+    EXPECT_EQ(vf1, v1);
+    EXPECT_EQ(vf2, v2);
+    EXPECT_EQ(vf3, v3);
+
+    EXPECT_EQ(ms.field1, v1);
+    EXPECT_EQ(ms.field2, v2);
+    EXPECT_EQ(ms.field3, v3);
+}
+
+/**
+ * Test the field type traits
+ */
+TEST(Struct3FieldsTest, FieldTraits)
+{
+    EXPECT_EQ(typeid(float), typeid(test::traits::field_type<test::types::field1_f>::type));
+    EXPECT_EQ(typeid(int),   typeid(test::traits::field_type<test::types::field2_f>::type));
+    EXPECT_EQ(typeid(char),  typeid(test::traits::field_type<test::types::field3_f>::type));
+
+    EXPECT_EQ(0, static_cast<unsigned int>(test::traits::field_index<test::types::field1_f>::value));
+    EXPECT_EQ(1, static_cast<unsigned int>(test::traits::field_index<test::types::field2_f>::value));
+    EXPECT_EQ(2, static_cast<unsigned int>(test::traits::field_index<test::types::field3_f>::value));
 }
