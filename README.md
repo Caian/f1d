@@ -107,7 +107,28 @@ namespace types {
 
 ## Multiple structs per namespace
 
-Currently, the template `value_type` **does not** allow multiple `F1D_STRUCT_MAKE` declarations in a single namespace because there will be multiple definitions of the base template trait inside the `traits` namespace. This may change in the future if I can find a solution that does not sacrifice simplicity.
+By default, calling `F1D_STRUCT_MAKE` will generate a `traits` namespace with template declarations that are incompatible with multiple structs. To solve this problem, it is possible to create the `traits` namespace first using the `F1D_TRAITS_MAKE()` macro and then use multiple calls to `F1D_STRUCT_MAKE_NT` (NT stands for no-traits) to create the structs:
+
+```c++
+F1D_TRAITS_MAKE()
+
+F1D_STRUCT_MAKE_NT(first_struct,
+    3, (
+        (a, int),
+        (b, int),
+        (c, int)
+    )
+) // first_struct
+
+F1D_STRUCT_MAKE_NT(second_struct,
+    2, (
+        (d, int),
+        (e, int)
+    )
+) // second_struct
+```
+
+Although this solves the problem with the `traits` namespace, it is still possible for typedef collisions to occur inside the `types` namespace. Unfortunately at the moment there is still no solution for this particular case.
 
 ## Struct factory
 
