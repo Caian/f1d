@@ -62,6 +62,27 @@
         SName, \
         i)
 
+#define F1D_NO_TRAITS()
+
+#define F1D_BASE_TRAITS() \
+namespace traits { \
+template <class T, unsigned int N> \
+    struct value_type \
+    { \
+        typedef void type; \
+    }; \
+    template <class T> \
+    struct field_type \
+    { \
+        typedef typename T::value_type type; \
+    }; \
+    template <class T> \
+    struct field_index \
+    { \
+        static const unsigned int value = T::index; \
+    }; \
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #define F1D_STRUCT_DECL_VAR(Type, Name) \
@@ -223,7 +244,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define F1D_STRUCT_MAKE_S1(Name, NF, Fields) \
+#define F1D_STRUCT_MAKE_S1(Name, NF, Fields, Traits) \
 namespace types { \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TYPES, 0, Fields) \
 } \
@@ -383,24 +404,18 @@ public: \
     } \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_INITS, types, Fields) \
 }; \
+Traits() \
 namespace traits { \
-    template <class T, unsigned int N> \
-    struct value_type \
-    { \
-        typedef void type; \
-    }; \
-    template <class T> \
-    struct field_type \
-    { \
-        typedef typename T::value_type type; \
-    }; \
-    template <class T> \
-    struct field_index \
-    { \
-        static const unsigned int value = T::index; \
-    }; \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TRAITS, Name, Fields) \
 }
 
 #define F1D_STRUCT_MAKE(Name, NF, Fields) \
-    F1D_STRUCT_MAKE_S1(Name, NF, BOOST_PP_TUPLE_TO_SEQ(NF, Fields))
+    F1D_STRUCT_MAKE_S1(Name, NF, BOOST_PP_TUPLE_TO_SEQ(NF, Fields), \
+        F1D_BASE_TRAITS)
+
+#define F1D_STRUCT_MAKE_NT(Name, NF, Fields) \
+    F1D_STRUCT_MAKE_S1(Name, NF, BOOST_PP_TUPLE_TO_SEQ(NF, Fields), \
+        F1D_NO_TRAITS)
+
+#define F1D_TRAITS_MAKE() \
+    F1D_BASE_TRAITS()
