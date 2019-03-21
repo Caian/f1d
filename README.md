@@ -1,8 +1,11 @@
 # f1d
 
-[![Build Status](https://travis-ci.org/Caian/f1d.svg?branch=master)](https://travis-ci.org/Caian/f1d)
-
 Generate structs from field tuples with convenient metadata
+
+## Test results
+Branch          | Build         | Tests coverage
+----------------|-------------- | --------------
+master          | [![Build Status](https://travis-ci.org/Caian/f1d.svg?branch=master)](https://travis-ci.org/Caian/f1d) | [![codecov.io](https://codecov.io/github/Caian/f1d/coverage.svg?branch=master)](https://codecov.io/github/Caian/f1d)
 
 ## Introduction
 
