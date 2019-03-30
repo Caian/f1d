@@ -46,6 +46,13 @@ F1D_STRUCT_MAKE(my_struct_1,
     )
 ) // my_struct_1
 
+struct some_struct_1
+{
+    int real_field1;
+    char some_field2;
+    float field1;
+};
+
 }
 
 /**
@@ -546,4 +553,23 @@ TEST(Struct1FieldsTest, FieldTraits)
     EXPECT_EQ(typeid(double), typeid(test::traits::field_type<test::types::field1_f>::type));
 
     EXPECT_EQ(0, static_cast<unsigned int>(test::traits::field_index<test::types::field1_f>::value));
+}
+
+/**
+ * Test the field type set_member method
+ */
+TEST(Struct1FieldsTest, FieldSetMember)
+{
+    const double v1 = 1.3;
+
+    test::types::field1_f field1(v1);
+
+    test::my_struct_1 ms;
+    test::some_struct_1 ss;
+
+    field1.set_member(ms);
+    field1.set_member(ss);
+
+    EXPECT_EQ(ms.field1, v1);
+    EXPECT_EQ(ss.field1, static_cast<float>(v1));
 }
