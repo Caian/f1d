@@ -149,6 +149,10 @@ template <class T, unsigned int N> \
         void operator ()(StructName& obj) { \
             obj.Name = _value; \
         } \
+        template <typename T> \
+        void set_member(T& obj) { \
+            obj.Name = _value; \
+        } \
     };
 
 #define F1D_STRUCT_ASSEMBLE_SUPER_FIELDS(_s, StructName, i, elem) \

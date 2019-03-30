@@ -194,6 +194,25 @@ field1(vf1);
 field1(ms);
 ```
 
+They also have a special `set_member` method that allows fields to set their values to any kind of struct, as long as the name of the member matches the original f1d-generated struct one:
+
+```c++
+struct some_struct
+{
+    int real_field1;
+    char some_field2;
+    double field1; // not really! ;)
+};
+
+test::types::field1_f field1(1.3);
+
+test::my_struct ms;
+some_struct ss;
+
+field1(ms);
+field1(ss);
+```
+
 Finally, field wrappers are also compatible with boost tuples:
 
 ```c++

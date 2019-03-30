@@ -48,6 +48,15 @@ F1D_STRUCT_MAKE(my_struct_3,
     )
 ) // my_struct_3
 
+struct some_struct_3
+{
+    short field2;
+    int one_field;
+    int field3;
+    char other_field;
+    double field1;
+};
+
 }
 
 /**
@@ -1017,4 +1026,40 @@ TEST(Struct3FieldsTest, FieldTraits)
     EXPECT_EQ(0, static_cast<unsigned int>(test::traits::field_index<test::types::field1_f>::value));
     EXPECT_EQ(1, static_cast<unsigned int>(test::traits::field_index<test::types::field2_f>::value));
     EXPECT_EQ(2, static_cast<unsigned int>(test::traits::field_index<test::types::field3_f>::value));
+}
+
+/**
+ * Test the field type set_member method
+ */
+TEST(Struct3FieldsTest, FieldSetMember)
+{
+    const float v1 = 1.4f;
+    const int   v2 = -7;
+    const char  v3 = 'H';
+
+    test::types::field1_f field1(v1);
+    test::types::field2_f field2(v2);
+    test::types::field3_f field3(v3);
+
+    float vf1;
+    int   vf2;
+    char  vf3;
+    test::my_struct_3 ms;
+    test::some_struct_3 ss;
+
+    field1.set_member(ms);
+    field2.set_member(ms);
+    field3.set_member(ms);
+
+    field1.set_member(ss);
+    field2.set_member(ss);
+    field3.set_member(ss);
+
+    EXPECT_EQ(ms.field1, v1);
+    EXPECT_EQ(ms.field2, v2);
+    EXPECT_EQ(ms.field3, v3);
+
+    EXPECT_EQ(ss.field1, static_cast<double>(v1));
+    EXPECT_EQ(ss.field2, static_cast<short>(v2));
+    EXPECT_EQ(ss.field3, static_cast<int>(v3));
 }
