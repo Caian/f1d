@@ -256,6 +256,19 @@ namespace traits { \
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#define F1D_STRUCT_ASSEMBLE_APPLY(StructName, StructVal, Funct, Name, i) \
+    Funct.template operator()<i, StructName>((StructVal).Name);
+
+#define F1D_STRUCT_ASSEMBLE_APPLYS(_s, what, i, elem) \
+    F1D_STRUCT_ASSEMBLE_APPLY( \
+        BOOST_PP_TUPLE_ELEM(3, 0, what), \
+        BOOST_PP_TUPLE_ELEM(3, 1, what), \
+        BOOST_PP_TUPLE_ELEM(3, 2, what), \
+        BOOST_PP_TUPLE_ELEM(2, 0, elem), \
+        i)
+
+///////////////////////////////////////////////////////////////////////////////
+
 #define F1D_STRUCT_ASSEMBLE_TSIZE(Type) \
     sizeof(Type) BOOST_PP_COMMA()
 
@@ -340,6 +353,30 @@ struct Name { \
         } \
         static const size_t* type_sizes = get_type_sizes(); \
         return type_sizes[index]; \
+    } \
+    template <typename Functor> \
+    void apply(Functor& f) \
+    { \
+        BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_APPLYS, (Name, *this, f), \
+            Fields) \
+    } \
+    template <typename Functor> \
+    void capply(Functor& f) const \
+    { \
+        BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_APPLYS, (Name, *this, f), \
+            Fields) \
+    } \
+    template <typename Functor> \
+    void apply(const Functor& f) \
+    { \
+        BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_APPLYS, (Name, *this, f), \
+            Fields) \
+    } \
+    template <typename Functor> \
+    void capply(const Functor& f) const \
+    { \
+        BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_APPLYS, (Name, *this, f), \
+            Fields) \
     } \
 }; \
 namespace types { \

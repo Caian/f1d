@@ -108,6 +108,58 @@ namespace types {
 }
 ```
 
+## The apply and capply methods
+
+The generated structs allow functors to be applied to each generated member, this enables some interesting transformations. There are two kinds of methods: `apply` and `capply`. The first allows the fields from the generated struct to be modified and the second one does not. Both methods also allows the functor to be passed as a constant reference so the following calls are valid:
+
+```c++
+test::funct_1 f1;
+const test::funct_1 f2;
+
+test::my_struct ms1;
+const test::my_struct ms2;
+
+ms1.apply(f1);
+ms1.apply(f2);
+
+ms1.capply(f1);
+ms1.capply(f2);
+
+ms2.capply(f1);
+ms2.capply(f2);
+```
+
+The functors must expose one or more of the following overloads, depending on
+whether themselves and the struct are constant or not:
+
+```c++
+// For apply(Funct&) and capply(Funct&)
+template <unsigned int I, typename S, typename V>
+void operator ()(const V& v)
+{
+}
+
+// For apply(const Funct&) and capply(const Funct&)
+template <unsigned int I, typename S, typename V>
+void operator ()(const V& v) const
+{
+}
+
+// For apply(Funct&)
+template <unsigned int I, typename S, typename V>
+void operator ()(V& v)
+{
+}
+
+// For apply(const Funct&)
+template <unsigned int I, typename S, typename V>
+void operator ()(V& v) const
+{
+}
+```
+
+Where `I` is the index of the field, `S` is the type of the generated struct, `V` is the type of the member in which the functor is being applied and `v` is the reference to the member itself. Exposing `I` and `S` allows using traits to perform more complicated tasks.
+
 ## Multiple structs per namespace
 
 By default, calling `F1D_STRUCT_MAKE` will generate a `traits` namespace with template declarations that are incompatible with multiple structs. To solve this problem, it is possible to create the `traits` namespace first using the `F1D_TRAITS_MAKE()` macro and then use multiple calls to `F1D_STRUCT_MAKE_NT` (NT stands for no-traits) to create the structs:
