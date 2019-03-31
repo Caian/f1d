@@ -51,22 +51,34 @@
         typedef Type type; \
     };
 
+#define F1D_STRUCT_ASSEMBLE_WRAPPER_TYPE(Type, SName, Namespace, i) \
+    template <> \
+    struct field_wrapper_type<SName, i> \
+    { \
+        typedef Namespace::BOOST_PP_CAT(Type,_f) type; \
+    };
+
 #define F1D_STRUCT_ASSEMBLE_TYPES(_s, nothing, i, elem) \
     F1D_STRUCT_ASSEMBLE_TYPEDEF( \
         BOOST_PP_TUPLE_ELEM(2, 1, elem), \
         BOOST_PP_TUPLE_ELEM(2, 0, elem))
 
-#define F1D_STRUCT_ASSEMBLE_TRAITS(_s, SName, i, elem) \
+#define F1D_STRUCT_ASSEMBLE_TRAITS(_s, what, i, elem) \
     F1D_STRUCT_ASSEMBLE_VALUE_TYPE( \
         BOOST_PP_TUPLE_ELEM(2, 1, elem), \
-        SName, \
+        BOOST_PP_TUPLE_ELEM(2, 0, what), \
+        i) \
+    F1D_STRUCT_ASSEMBLE_WRAPPER_TYPE( \
+        BOOST_PP_TUPLE_ELEM(2, 0, elem), \
+        BOOST_PP_TUPLE_ELEM(2, 0, what), \
+        BOOST_PP_TUPLE_ELEM(2, 1, what), \
         i)
 
 #define F1D_NO_TRAITS()
 
 #define F1D_BASE_TRAITS() \
 namespace traits { \
-template <class T, unsigned int N> \
+    template <class T, unsigned int N> \
     struct value_type \
     { \
         typedef void type; \
@@ -80,6 +92,11 @@ template <class T, unsigned int N> \
     struct field_index \
     { \
         static const unsigned int value = T::index; \
+    }; \
+    template <class T, unsigned int N> \
+    struct field_wrapper_type \
+    { \
+        typedef void type; \
     }; \
 }
 
@@ -410,7 +427,8 @@ public: \
 }; \
 Traits() \
 namespace traits { \
-    BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TRAITS, Name, Fields) \
+    BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TRAITS, (Name, types), \
+        Fields) \
 }
 
 #define F1D_STRUCT_MAKE(Name, NF, Fields) \
