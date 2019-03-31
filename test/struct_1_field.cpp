@@ -53,6 +53,57 @@ struct some_struct_1
     float field1;
 };
 
+struct funct_1_1
+{
+    template <unsigned int I, typename S, typename V>
+    void operator ()(const V& v) const
+    {
+        V v2 = v + 1;
+    }
+};
+
+struct funct_1_2
+{
+    template <unsigned int I, typename S, typename V>
+    void operator ()(V& v) const
+    {
+        v += 1;
+    }
+};
+
+struct funct_1_3
+{
+    double total;
+
+    funct_1_3() :
+        total(0)
+    {
+    }
+
+    template <unsigned int I, typename S, typename V>
+    void operator ()(const V& v)
+    {
+        total += v + 1;
+    }
+};
+
+struct funct_1_4
+{
+    double total;
+
+    funct_1_4() :
+        total(0)
+    {
+    }
+
+    template <unsigned int I, typename S, typename V>
+    void operator ()(V& v)
+    {
+        total += v + 1;
+        v = total;
+    }
+};
+
 }
 
 /**
@@ -574,4 +625,72 @@ TEST(Struct1FieldsTest, FieldSetMember)
 
     EXPECT_EQ(ms.field1, v1);
     EXPECT_EQ(ss.field1, static_cast<float>(v1));
+}
+
+/**
+ * Test the struct apply method
+ */
+TEST(Struct1FieldsTest, ApplyMethod)
+{
+    const double v1 = 10;
+
+    test::my_struct_1 ms1;
+    test::my_struct_1 ms2;
+    test::my_struct_1 ms3;
+    test::my_struct_1 ms4;
+    test::my_struct_1_factory f;
+
+    ASSERT_NO_THROW(f.begin());
+    ASSERT_NO_THROW(f.set_field1(v1));
+    ASSERT_NO_THROW(f.end());
+    ASSERT_NO_THROW(ms1 = f.get());
+    ASSERT_NO_THROW(ms2 = f.get());
+    ASSERT_NO_THROW(ms3 = f.get());
+    ASSERT_NO_THROW(ms4 = f.get());
+
+    const test::funct_1_1 f1;
+    const test::funct_1_2 f2;
+    test::funct_1_3 f3;
+    test::funct_1_4 f4;
+
+    ms1.apply(f1);
+    ms2.apply(f2);
+    ms3.apply(f3);
+    ms4.apply(f4);
+
+    EXPECT_EQ(ms1.field1, v1);
+    EXPECT_EQ(ms2.field1, (v1 + 1));
+    EXPECT_EQ(ms3.field1, v1);
+    EXPECT_EQ(ms4.field1, (v1 + 1));
+
+    EXPECT_EQ(f3.total, (v1 + 1));
+    EXPECT_EQ(f4.total, (v1 + 1));
+}
+
+/**
+ * Test the struct capply method
+ */
+TEST(Struct1FieldsTest, CApplyMethod)
+{
+    const double v1 = 10;
+
+    test::my_struct_1_factory f;
+
+    ASSERT_NO_THROW(f.begin());
+    ASSERT_NO_THROW(f.set_field1(v1));
+    ASSERT_NO_THROW(f.end());
+
+    const test::my_struct_1 ms1 = f.get();
+    const test::my_struct_1 ms3 = f.get();
+
+    const test::funct_1_1 f1;
+    test::funct_1_3 f3;
+
+    ms1.capply(f1);
+    ms3.capply(f3);
+
+    EXPECT_EQ(ms1.field1, v1);
+    EXPECT_EQ(ms3.field1, v1);
+
+    EXPECT_EQ(f3.total, (v1 + 1));
 }
