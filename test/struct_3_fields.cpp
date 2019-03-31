@@ -238,7 +238,7 @@ TEST(Struct3FieldsTest, AccessIndexMetadata)
 }
 
 /**
- * Test member access
+ * Test trait access
  */
 TEST(Struct3FieldsTest, AccessTraits)
 {
@@ -255,6 +255,10 @@ TEST(Struct3FieldsTest, AccessTraits)
     EXPECT_EQ(typeid(ms.field1), typeid(test::traits::value_type<test::my_struct_3, 0>::type));
     EXPECT_EQ(typeid(ms.field2), typeid(test::traits::value_type<test::my_struct_3, 1>::type));
     EXPECT_EQ(typeid(ms.field3), typeid(test::traits::value_type<test::my_struct_3, 2>::type));
+
+    EXPECT_EQ(typeid(test::types::field1_f), typeid(test::traits::field_wrapper_type<test::my_struct_3, 0>::type));
+    EXPECT_EQ(typeid(test::types::field2_f), typeid(test::traits::field_wrapper_type<test::my_struct_3, 1>::type));
+    EXPECT_EQ(typeid(test::types::field3_f), typeid(test::traits::field_wrapper_type<test::my_struct_3, 2>::type));
 }
 
 /**

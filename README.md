@@ -213,6 +213,23 @@ field1(ms);
 field1(ss);
 ```
 
+Field wrappers have their own `field_type` and `field_index` traits to access information about their source fields:
+
+```c++
+typedef test::types::field1_f Field;
+
+typedef test::traits::field_type<Field>::type ValueType; // float
+
+unsigned int Index = test::traits::field_index<Field>::value; // 0
+```
+
+It's also possible to get the field wrapper type directly from the field index using the `field_wrapper_type` trait:
+
+```c++
+typedef test::traits::field_wrapper_type<test::my_struct, 0>::type Field1;
+Field1 field1(1.3);
+```
+
 Finally, field wrappers are also compatible with boost tuples:
 
 ```c++
