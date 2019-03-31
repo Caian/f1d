@@ -242,7 +242,7 @@ TEST(Struct1FieldsTest, FactoryOK)
     ASSERT_NO_THROW(f.begin());
     ASSERT_NO_THROW(f.set_field1(v1));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
 
@@ -263,10 +263,10 @@ TEST(Struct1FieldsTest, FactoryOKX5)
         ASSERT_NO_THROW(f.begin());
         ASSERT_NO_THROW(f.set_field1(v1));
         ASSERT_NO_THROW(f.end());
-        ASSERT_NO_THROW((ms = f.get()));
-        ASSERT_NO_THROW((ms = f.get()));
-        ASSERT_NO_THROW((ms = f.get()));
-        ASSERT_NO_THROW((ms = f.get()));
+        ASSERT_NO_THROW(ms = f.get());
+        ASSERT_NO_THROW(ms = f.get());
+        ASSERT_NO_THROW(ms = f.get());
+        ASSERT_NO_THROW(ms = f.get());
 
         EXPECT_EQ(f.get_field1(), v1);
 
@@ -308,7 +308,7 @@ TEST(Struct1FieldsTest, FactoryGetBeforeSet)
     EXPECT_EQ(f.get_field1(), v1);
 
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(ms.field1, v1);
 }
@@ -350,7 +350,7 @@ TEST(Struct1FieldsTest, FactoryMultipleSet)
     MY_ASSERT_THROW_STRUCT_NAME(f.set_field1(v12), "my_struct_1");
 
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v11);
 
@@ -374,7 +374,7 @@ TEST(Struct1FieldsTest, FactorySetAfterEnd)
 
     MY_ASSERT_THROW_STRUCT_NAME(f.set_field1(v1), "my_struct_1");
 
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
 
@@ -462,7 +462,7 @@ TEST(Struct1FieldsTest, FieldConstruct)
     ASSERT_NO_THROW(f.begin());
     ASSERT_NO_THROW(f.set_field1(v1));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
 
@@ -490,7 +490,7 @@ TEST(Struct1FieldsTest, FieldAssign)
     ASSERT_NO_THROW(f.begin());
     ASSERT_NO_THROW(f.set_field1(v1));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
 

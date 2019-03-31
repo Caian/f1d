@@ -278,7 +278,7 @@ TEST(Struct3FieldsTest, FactoryOK)
     ASSERT_NO_THROW(f.set_field2(v2));
     ASSERT_NO_THROW(f.set_field3(v3));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -307,10 +307,10 @@ TEST(Struct3FieldsTest, FactoryOKX5)
         ASSERT_NO_THROW(f.set_field2(v2));
         ASSERT_NO_THROW(f.set_field3(v3));
         ASSERT_NO_THROW(f.end());
-        ASSERT_NO_THROW((ms = f.get()));
-        ASSERT_NO_THROW((ms = f.get()));
-        ASSERT_NO_THROW((ms = f.get()));
-        ASSERT_NO_THROW((ms = f.get()));
+        ASSERT_NO_THROW(ms = f.get());
+        ASSERT_NO_THROW(ms = f.get());
+        ASSERT_NO_THROW(ms = f.get());
+        ASSERT_NO_THROW(ms = f.get());
 
         EXPECT_EQ(f.get_field1(), v1);
         EXPECT_EQ(f.get_field1(), v1);
@@ -363,7 +363,7 @@ TEST(Struct3FieldsTest, FactoryGetBeforeSet)
     EXPECT_EQ(f.get_field3(), v3);
 
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(ms.field1, v1);
     EXPECT_EQ(ms.field2, v2);
@@ -415,7 +415,7 @@ TEST(Struct3FieldsTest, FactoryMultipleSet)
     ASSERT_NO_THROW(f.set_field3(v31));
     ASSERT_THROW   (f.set_field3(v32), f1d::already_set_exception);
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v11);
     EXPECT_EQ(f.get_field2(), v21);
@@ -446,7 +446,7 @@ TEST(Struct3FieldsTest, FactorySetAfterEnd)
     ASSERT_THROW   (f.set_field1(v1), f1d::already_finished_exception);
     ASSERT_THROW   (f.set_field2(v2), f1d::already_finished_exception);
     ASSERT_THROW   (f.set_field3(v3), f1d::already_finished_exception);
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -534,7 +534,7 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet1)
 
     ASSERT_NO_THROW(f.set_field1(v1));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -585,7 +585,7 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet1)
 
     ASSERT_NO_THROW(f.set_field2(v2));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -636,7 +636,7 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet1)
 
     ASSERT_NO_THROW(f.set_field3(v3));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -704,7 +704,7 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet2)
     ASSERT_NO_THROW(f.set_field1(v1));
     ASSERT_NO_THROW(f.set_field2(v2));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -760,7 +760,7 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet2)
     ASSERT_NO_THROW(f.set_field2(v2));
     ASSERT_NO_THROW(f.set_field3(v3));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -817,7 +817,7 @@ TEST(Struct3FieldsTest, FactoryIncompleteSet2)
     ASSERT_NO_THROW(f.set_field1(v1));
     ASSERT_NO_THROW(f.set_field3(v3));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -845,7 +845,7 @@ TEST(Struct3FieldsTest, FieldConstruct)
     ASSERT_NO_THROW(f.set_field2(v2));
     ASSERT_NO_THROW(f.set_field3(v3));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
@@ -897,7 +897,7 @@ TEST(Struct3FieldsTest, FieldAssign)
     ASSERT_NO_THROW(f.set_field2(v2));
     ASSERT_NO_THROW(f.set_field3(v3));
     ASSERT_NO_THROW(f.end());
-    ASSERT_NO_THROW((ms = f.get()));
+    ASSERT_NO_THROW(ms = f.get());
 
     EXPECT_EQ(f.get_field1(), v1);
     EXPECT_EQ(f.get_field2(), v2);
