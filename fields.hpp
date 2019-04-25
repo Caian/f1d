@@ -98,6 +98,11 @@ namespace traits { \
     { \
         typedef void type; \
     }; \
+    template <class T> \
+    struct num_fields \
+    { \
+        static const unsigned int value = T::num_fields; \
+    }; \
 }
 
 ///////////////////////////////////////////////////////////////////////////////

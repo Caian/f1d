@@ -144,6 +144,10 @@ TEST(Struct3FieldsTest, AccessCountMetadata)
 {
     EXPECT_EQ(static_cast<unsigned int>(test::my_struct_3::num_fields), 3);
     EXPECT_EQ(test::my_struct_3::get_num_fields(), 3);
+    EXPECT_EQ(static_cast<unsigned int>(
+        test::my_struct_3::num_fields),
+        static_cast<unsigned int>(test::traits::
+        num_fields<test::my_struct_3>::value));
 }
 
 /**

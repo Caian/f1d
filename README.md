@@ -21,7 +21,7 @@ This project requires [boost](https://www.boost.org/) for the preprocessor capab
 
 ## Usage
 
-The macro `F1D_STRUCT_MAKE` is used to generate the struct, the factory, a nested namespace `types` containing one type per field, and a nested namespace `traits` with a metafunction used to query the type of a given field index.
+The macro `F1D_STRUCT_MAKE` is used to generate the struct, the factory, a nested namespace `types` containing one type per field, and a nested namespace `traits` with a metafunction used to query the type of a given field index and the number of fields in the struct.
 
 For instance, the following call:
 
