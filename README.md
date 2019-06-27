@@ -234,19 +234,24 @@ field1_1.get() = v1;
 const float vf1 = field1_1.get();
 ```
 
-They can be used as functors to apply their field value to either a reference to the same underlying type, or even a f1d-generated struct, making them handy when applying transforms:
+They can be used as functors to apply their field value to variables, to their matching f1d-generated struct, and to their matching f1d-generated factory, making them very handy when applying transforms:
 
 ```c++
 test::types::field1_f field1(1.3);
 
 float vf1;
 test::my_struct ms;
+test::my_struct_factory fms;
 
 field1(vf1);
 field1(ms);
+
+fms.begin();
+field1(fms);
+fms.end();
 ```
 
-They also have a special `set_member` method that allows fields to set their values to any kind of struct, as long as the name of the member matches the original f1d-generated struct one:
+They also have a special `set_member` method that allows fields to set their field value to any kind of struct, as long as the name of the member matches the name of the original f1d-generated struct:
 
 ```c++
 struct some_struct
