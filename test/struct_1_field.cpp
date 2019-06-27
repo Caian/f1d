@@ -41,9 +41,7 @@
 namespace test {
 
 F1D_STRUCT_MAKE(my_struct_1,
-    1, (
-        (field1, double)
-    )
+    ( (field1, double) )
 ) // my_struct_1
 
 struct some_struct_1
