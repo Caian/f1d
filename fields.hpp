@@ -23,7 +23,7 @@
 #include "exceptions.hpp"
 
 #include <boost/preprocessor/tuple/elem.hpp>
-#include <boost/preprocessor/tuple/to_seq.hpp>
+#include <boost/preprocessor/seq/size.hpp>
 #include <boost/preprocessor/seq/for_each_i.hpp>
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/preprocessor/punctuation/comma.hpp>
@@ -479,12 +479,12 @@ namespace traits { \
         Fields) \
 }
 
-#define F1D_STRUCT_MAKE(Name, NF, Fields) \
-    F1D_STRUCT_MAKE_S1(Name, NF, BOOST_PP_TUPLE_TO_SEQ(NF, Fields), \
+#define F1D_STRUCT_MAKE(Name, Fields) \
+    F1D_STRUCT_MAKE_S1(Name, BOOST_PP_SEQ_SIZE(Fields), Fields, \
         F1D_BASE_TRAITS)
 
 #define F1D_STRUCT_MAKE_NT(Name, NF, Fields) \
-    F1D_STRUCT_MAKE_S1(Name, NF, BOOST_PP_TUPLE_TO_SEQ(NF, Fields), \
+    F1D_STRUCT_MAKE_S1(Name, BOOST_PP_SEQ_SIZE(Fields), Fields, \
         F1D_NO_TRAITS)
 
 #define F1D_TRAITS_MAKE() \

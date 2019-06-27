@@ -9,7 +9,7 @@ master          | [![Build Status](https://travis-ci.org/Caian/f1d.svg?branch=ma
 
 ## Introduction
 
-This project allows the creation of structs from tuples, where each name and type in the tuple expand to an individual field in the struct.
+This project allows the creation of structs from sequences of tuples, where each name and type in the tuple expand to an individual field in the struct.
 
 Additional methods allow quick access to the field count, original field names, field types (as typed in the source code), field sizes (though sizeof), and allow searching for the index of the field by its name.
 
@@ -21,17 +21,15 @@ This project requires [boost](https://www.boost.org/) for the preprocessor capab
 
 ## Usage
 
-The macro `F1D_STRUCT_MAKE` is used to generate the struct, the factory, a nested namespace `types` containing one type per field, and a nested namespace `traits` with a metafunction used to query the type of a given field index and the number of fields in the struct.
+The macro `F1D_STRUCT_MAKE` is used to generate the struct, the factory, a nested namespace `types` containing one type per field, and a nested namespace `traits` with metafunctions used to query the type of a given field index and the number of fields in the struct.
 
 For instance, the following call:
 
 ```c++
 F1D_STRUCT_MAKE(my_struct_3,
-    3, (
-        (field1, float),
-        (field2, int  ),
-        (field3, char )
-    )
+    ( (field1, float) )
+    ( (field2, int  ) )
+    ( (field3, char ) )
 ) // my_struct_3
 ```
 
@@ -168,18 +166,14 @@ By default, calling `F1D_STRUCT_MAKE` will generate a `traits` namespace with te
 F1D_TRAITS_MAKE()
 
 F1D_STRUCT_MAKE_NT(first_struct,
-    3, (
-        (a, int),
-        (b, int),
-        (c, int)
-    )
+    ( (a, int) )
+    ( (b, int) )
+    ( (c, int) )
 ) // first_struct
 
 F1D_STRUCT_MAKE_NT(second_struct,
-    2, (
-        (d, int),
-        (e, int)
-    )
+    ( (d, int) )
+    ( (e, int) )
 ) // second_struct
 ```
 
