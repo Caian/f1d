@@ -1214,3 +1214,35 @@ TEST(Struct3FieldsTest, CApplyMethod)
 
     EXPECT_EQ(f3.total, (v1 + 1 + v2 + 1 + v3 + 1));
 }
+
+/**
+ * Test factory set from field wrappers without error
+ */
+TEST(Struct3FieldsTest, FactoryFromFieldOK)
+{
+    const float v1 = 1.4f;
+    const int   v2 = -7;
+    const char  v3 = 'H';
+
+    test::my_struct_3 ms;
+    test::my_struct_3_factory f;
+
+    test::types::field1_f field1(v1);
+    test::types::field2_f field2(v2);
+    test::types::field3_f field3(v3);
+
+    ASSERT_NO_THROW(f.begin());
+    ASSERT_NO_THROW(field1(f));
+    ASSERT_NO_THROW(field2(f));
+    ASSERT_NO_THROW(field3(f));
+    ASSERT_NO_THROW(f.end());
+    ASSERT_NO_THROW(ms = f.get());
+
+    EXPECT_EQ(f.get_field1(), v1);
+    EXPECT_EQ(f.get_field2(), v2);
+    EXPECT_EQ(f.get_field3(), v3);
+
+    EXPECT_EQ(ms.field1, v1);
+    EXPECT_EQ(ms.field2, v2);
+    EXPECT_EQ(ms.field3, v3);
+}

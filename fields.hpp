@@ -38,6 +38,9 @@
 #define F1D_STRUCT_TYPE_NAME(Name) \
     BOOST_PP_CAT(Name, _t)
 
+#define F1D_STRUCT_FACTORY_NAME(Name) \
+    BOOST_PP_CAT(Name, _factory)
+
 #define F1D_STRUCT_FULL_TYPE(Namespace, Name) \
     Namespace::F1D_STRUCT_TYPE_NAME(Name)
 
@@ -170,6 +173,9 @@ namespace traits { \
         } \
         void operator ()(StructName& obj) { \
             obj.Name = _value; \
+        } \
+        void operator ()(F1D_STRUCT_FACTORY_NAME(StructName)& obj) { \
+            obj.BOOST_PP_CAT(set_, Name)(_value); \
         } \
         template <typename T> \
         void set_member(T& obj) { \
@@ -384,10 +390,7 @@ struct Name { \
             Fields) \
     } \
 }; \
-namespace types { \
-    BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_SUPER_FIELDS, Name, Fields) \
-} \
-class BOOST_PP_CAT(Name,_factory) { \
+class F1D_STRUCT_FACTORY_NAME(Name) { \
 private: \
     Name _obj; \
     bool _begun; \
@@ -423,7 +426,7 @@ private: \
         } \
     } \
 public: \
-    inline BOOST_PP_CAT(Name,_factory)() : \
+    inline F1D_STRUCT_FACTORY_NAME(Name)() : \
         _obj(), \
         _begun(false), \
         _ended(false), \
@@ -467,6 +470,9 @@ public: \
     } \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_INITS, types, Fields) \
 }; \
+namespace types { \
+    BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_SUPER_FIELDS, Name, Fields) \
+} \
 Traits() \
 namespace traits { \
     BOOST_PP_SEQ_FOR_EACH_I(F1D_STRUCT_ASSEMBLE_TRAITS, (Name, types), \

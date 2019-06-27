@@ -698,3 +698,25 @@ TEST(Struct1FieldsTest, CApplyMethod)
 
     EXPECT_EQ(f3.total, (v1 + 1));
 }
+
+/**
+ * Test factory set from field wrappers without error
+ */
+TEST(Struct1FieldsTest, FactoryFromFieldOK)
+{
+    const double v1 = 1.4;
+
+    test::my_struct_1 ms;
+    test::my_struct_1_factory f;
+
+    test::types::field1_f field1(v1);
+
+    ASSERT_NO_THROW(f.begin());
+    ASSERT_NO_THROW(field1(f));
+    ASSERT_NO_THROW(f.end());
+    ASSERT_NO_THROW(ms = f.get());
+
+    EXPECT_EQ(f.get_field1(), v1);
+
+    EXPECT_EQ(ms.field1, v1);
+}
