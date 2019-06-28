@@ -483,7 +483,7 @@ namespace traits { \
     F1D_STRUCT_MAKE_S1(Name, BOOST_PP_SEQ_SIZE(Fields), Fields, \
         F1D_BASE_TRAITS)
 
-#define F1D_STRUCT_MAKE_NT(Name, NF, Fields) \
+#define F1D_STRUCT_MAKE_NT(Name, Fields) \
     F1D_STRUCT_MAKE_S1(Name, BOOST_PP_SEQ_SIZE(Fields), Fields, \
         F1D_NO_TRAITS)
 
