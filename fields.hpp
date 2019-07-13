@@ -168,17 +168,17 @@ namespace traits { \
         operator value_type() const { \
             return get(); \
         } \
-        void operator ()(value_type& value) { \
+        void operator ()(value_type& value) const { \
             value = _value; \
         } \
-        void operator ()(StructName& obj) { \
+        void operator ()(StructName& obj) const { \
             obj.Name = _value; \
         } \
-        void operator ()(F1D_STRUCT_FACTORY_NAME(StructName)& obj) { \
+        void operator ()(F1D_STRUCT_FACTORY_NAME(StructName)& obj) const { \
             obj.BOOST_PP_CAT(set_, Name)(_value); \
         } \
         template <typename T> \
-        void set_member(T& obj) { \
+        void set_member(T& obj) const { \
             obj.Name = _value; \
         } \
     };
@@ -268,7 +268,7 @@ namespace traits { \
 ///////////////////////////////////////////////////////////////////////////////
 
 #define F1D_STRUCT_ASSEMBLE_APPLY(StructName, StructVal, Funct, Name, i) \
-    Funct.template operator()<i, StructName>((StructVal).Name);
+    Funct.template operator ()<i, StructName>((StructVal).Name);
 
 #define F1D_STRUCT_ASSEMBLE_APPLYS(_s, what, i, elem) \
     F1D_STRUCT_ASSEMBLE_APPLY( \
